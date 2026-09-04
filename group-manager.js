@@ -131,7 +131,7 @@
 
 
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
+const QRCode = require('qrcode');
 const express = require('express');
 
 const app = express();
@@ -146,14 +146,19 @@ const client = new Client({
         ]
     }
 });
-// hello
+// h
 let isClientReady = false;
 
 console.log("Starting WhatsApp client...");
 
-client.on('qr', qr => {
-    console.log("QR code received, scan with your phone:");
-    qrcode.generate(qr, { small: true });
+client.on('qr', async qr => {
+    console.log("QR code received!");
+
+    const qrDataUrl = await QRCode.toDataURL(qr);
+
+    console.log("QR_DATA_START");
+    console.log(qrDataUrl);
+    console.log("QR_DATA_END");
 });
 
 client.on('ready', () => {
