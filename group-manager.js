@@ -146,7 +146,7 @@ const client = new Client({
         ]
     }
 });
-
+// hello
 let isClientReady = false;
 
 console.log("Starting WhatsApp client...");
