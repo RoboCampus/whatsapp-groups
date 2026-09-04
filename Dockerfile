@@ -1,7 +1,7 @@
 FROM node:18-bookworm
 
-# Install Chromium dependencies required by Puppeteer/Chrome
 RUN apt-get update && apt-get install -y \
+    libglib2.0-0 \
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -17,7 +17,6 @@ RUN apt-get update && apt-get install -y \
     libpangocairo-1.0-0 \
     libpango-1.0-0 \
     libcairo2 \
-    libglib2.0-0 \
     fonts-liberation \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
