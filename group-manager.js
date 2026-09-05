@@ -140,10 +140,7 @@ app.use(express.json());
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox'
-        ]
+    args: [ '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu' ]
     }
 });
 // h
@@ -196,9 +193,12 @@ app.post('/create-job-group', async (req, res) => {
         // Always include the bot/host owner
         participants.push(client.info.wid._serialized);
 
-        console.log('Formatted participants:', participants);
+        console.log('[Background] Calling createGroup...'); 
+        console.log('[Background] Job:', jobTitle);
+        console.log('[Background] Participants:', participants);
 
         const result = await client.createGroup(jobTitle, participants);
+        console.log('[Background] createGroup() returned:', result);
         const groupId = result.gid._serialized;
 
         console.log('[Background] Group created successfully:', groupId);
