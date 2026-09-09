@@ -16,7 +16,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-let sock = null;
+// let sock = null;
 
 
 app.post("/create-job-group", async (req, res) => {
@@ -233,7 +233,12 @@ async function startWhatsApp() {
 // ==============================
 // START SERVER
 // ==============================
+// const PORT = process.env.PORT || 3000;
 
+// app.listen(PORT, "0.0.0.0", () => {
+//     console.log(`Server running on port ${PORT}`);
+//     startWhatsApp();
+// });
 app.listen(PORT, () => {
 
     console.log(`Server listening on port ${PORT}`);

@@ -4,7 +4,7 @@
   "description": "",
   "main": "group-manager.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+     "start": "node baies-group-managment.js"
   },
   "keywords": [],
   "author": "",
