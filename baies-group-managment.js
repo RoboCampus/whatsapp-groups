@@ -101,11 +101,20 @@ app.post("/create-job-group", async (req, res) => {
 });
 
 async function startWhatsApp() {
+    console.log("CWD:", process.cwd());
+    console.log("Auth exists:", fs.existsSync("./auth"));
+
+    if (fs.existsSync("./auth")) {
+        console.log("Auth files:", fs.readdirSync("./auth"));
+    }
 
     const {
         state,
         saveCreds
     } = await useMultiFileAuthState("./auth");
+
+    console.log("Registered:", state.creds.registered);
+    console.log("Account:", state.creds.me?.id || null);
 
     sock = makeWASocket({
         auth: state,
