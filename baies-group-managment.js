@@ -1,5 +1,5 @@
 const makeWASocket = require("baileys").default;
-
+const fs = require("fs");
 const {
     useMultiFileAuthState,
     DisconnectReason
