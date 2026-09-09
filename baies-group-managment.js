@@ -111,7 +111,7 @@ async function startWhatsApp() {
     const {
         state,
         saveCreds
-    } = await useMultiFileAuthState("./auth");
+    } = await useMultiFileAuthState("./auth/auth");
 
     console.log("Registered:", state.creds.registered);
     console.log("Account:", state.creds.me?.id || null);
