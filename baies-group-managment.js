@@ -6,7 +6,7 @@ const {
 } = require("baileys");
 
 const qrcode = require("qrcode-terminal");
-// const QRCode = require("qrcode");
+const QRCode = require("qrcode");
 
 const express = require("express");
 
@@ -100,6 +100,57 @@ app.post("/create-job-group", async (req, res) => {
 
 });
 
+let currentQr = null;
+
+app.get("/qr", async (req, res) => {
+    if (!currentQr) {
+        return res.status(404).send(`
+            <html>
+            <body>
+                <h1>QR code not available</h1>
+                <p>WhatsApp is either already connected or has not generated a QR code yet.</p>
+            </body>
+            </html>
+        `);
+    }
+
+    try {
+        const qrImage = await QRCode.toDataURL(currentQr);
+
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>WhatsApp Login</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        margin-top: 50px;
+                    }
+
+                    img {
+                        width: 400px;
+                        max-width: 90vw;
+                    }
+                </style>
+            </head>
+
+            <body>
+                <h1>Scan WhatsApp QR Code</h1>
+                <img src="${qrImage}" />
+                <p>Open WhatsApp → Linked Devices → Link a Device</p>
+            </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error("Failed to generate QR image:", error);
+
+        res.status(500).send("Failed to generate QR code");
+    }
+});
+
 async function startWhatsApp() {
     console.log("CWD:", process.cwd());
     console.log("Auth exists:", fs.existsSync("./auth"));
@@ -138,9 +189,10 @@ async function startWhatsApp() {
 
             console.log("Scan this QR code:");
             // console.log(qr);
-            qrcode.generate(qr, {
-                small: true
-            });
+            // qrcode.generate(qr, {
+            //     small: true
+            // });
+            currentQr = qr;
             // const qrImage = await QRCode.toDataURL(qr);
             // console.log(qrImage);
 
