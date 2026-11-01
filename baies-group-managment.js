@@ -16,7 +16,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-// let sock = null;
+let sock = null;
 
 
 app.post("/create-job-group", async (req, res) => {
@@ -80,9 +80,29 @@ app.post("/create-job-group", async (req, res) => {
         console.log("Participants promoted.");
 
 
+        // Get the group invite link
+        let inviteLink = null;
+
+        try {
+
+            const inviteCode = await sock.groupInviteCode(group.id);
+
+            inviteLink = `https://chat.whatsapp.com/${inviteCode}`;
+
+            console.log("Invite link:", inviteLink);
+
+        } catch (inviteError) {
+
+            // The group already exists at this point, so don't fail the whole request
+            console.error("Failed to get invite link:", inviteError);
+
+        }
+
+
         res.json({
             success: true,
             groupId: group.id,
+            inviteLink: inviteLink,
             name: name,
             participants: jids
         });
